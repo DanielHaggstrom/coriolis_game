@@ -22,6 +22,8 @@ CYLINDER_THICKNESS = 20
 CYLINDER_CENTER = (WIDTH // 2, HEIGHT // 2)
 OMEGA = 0.1
 MAX_DRAG_DISTANCE = 150
+VELOCITY_SCALE = 10  # Adjustable speed scaling factor
+
 
 # clase Slider para controlar la velocidad de rotación
 class Slider:
@@ -62,7 +64,7 @@ class Slider:
 
 
 # physics functions for projectiles
-def calculate_velocity(start_pos, end_pos):
+def calculate_velocity(start_pos, end_pos, velocity_scale=VELOCITY_SCALE):
     """Calculate the initial velocity based on the drag distance."""
     dx = start_pos[0] - end_pos[0]
     dy = start_pos[1] - end_pos[1]
@@ -71,8 +73,8 @@ def calculate_velocity(start_pos, end_pos):
         scale = MAX_DRAG_DISTANCE / drag_distance
         dx *= scale
         dy *= scale
-    velocity = (dx / 10, dy / 10)
-    return velocity, (dx, dy)
+    velocity = (dx / velocity_scale, dy / velocity_scale)
+    return velocity
 
 
 def apply_coriolis_and_centrifugal(projectile, omega):
@@ -189,7 +191,7 @@ while running:
             if event.button == 1 and dragging:
                 dragging = False
                 end_pos = pygame.mouse.get_pos()
-                velocity, _ = calculate_velocity(start_pos, end_pos)
+                velocity = calculate_velocity(start_pos, end_pos)
                 if inside_cylinder(start_pos):
                     projectiles.append({
                         "pos": list(start_pos),
@@ -200,8 +202,9 @@ while running:
 
     if dragging:
         end_pos = pygame.mouse.get_pos()
-        _, limited_drag = calculate_velocity(start_pos, end_pos)
         limited_end_pos = (start_pos[0] - limited_drag[0], start_pos[1] - limited_drag[1])
+        limited_velocity = calculate_velocity(start_pos, end_pos)
+        limited_end_pos = (start_pos[0] - limited_velocity[0] * VELOCITY_SCALE, start_pos[1] - limited_velocity[1] * VELOCITY_SCALE)
         pygame.draw.line(screen, RED, start_pos, limited_end_pos, 2)
 
     for projectile in projectiles:
@@ -220,7 +223,7 @@ while running:
     draw_rotation_arrows()
 
     if dragging:
-        draw_speed_box(screen, start_pos, limited_drag, OMEGA)
+        draw_speed_box(screen, start_pos, limited_velocity, OMEGA)
 
     omega_slider.draw(screen)
 
