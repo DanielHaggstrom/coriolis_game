@@ -202,7 +202,6 @@ while running:
 
     if dragging:
         end_pos = pygame.mouse.get_pos()
-        limited_end_pos = (start_pos[0] - limited_drag[0], start_pos[1] - limited_drag[1])
         limited_velocity = calculate_velocity(start_pos, end_pos)
         limited_end_pos = (start_pos[0] - limited_velocity[0] * VELOCITY_SCALE, start_pos[1] - limited_velocity[1] * VELOCITY_SCALE)
         pygame.draw.line(screen, RED, start_pos, limited_end_pos, 2)
