@@ -167,7 +167,7 @@ def draw_rotation_arrows():
 
 
 # game loop
-omega_slider = Slider(50, HEIGHT - 50, 300, 0.01, 2.0, OMEGA)
+omega_slider = Slider(50, HEIGHT - 50, 300, 0, 0.5, OMEGA)
 projectiles = []
 dragging = False
 start_pos = (0, 0)
