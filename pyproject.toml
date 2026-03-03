@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "coriolis-game"
+version = "1.0.0"
+description = "A pygame simulation for launching projectiles inside a rotating cylinder."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [
+  { name = "Daniel Häggström" }
+]
+dependencies = [
+  "pygame>=2.6,<3",
+]
+
+[project.urls]
+Repository = "https://github.com/DanielHaggstrom/coriolis_game"
+
+[project.scripts]
+coriolis-game = "coriolis_game.app:main"
+
+[tool.setuptools.packages.find]
+include = ["coriolis_game*"]
